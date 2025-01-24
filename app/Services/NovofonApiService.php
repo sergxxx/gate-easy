@@ -14,7 +14,7 @@ class NovofonApiService
     public function __construct()
     {
         $this->gatePhoneNumbers = config('services.gate.phone_numbers');
-		$this->callerNumber = config('services.novofon.caller_number');
+        $this->callerNumber = config('services.novofon.caller_number');
         $this->client = new Api(config('services.novofon.key'), config('services.novofon.secret'));
     }
 

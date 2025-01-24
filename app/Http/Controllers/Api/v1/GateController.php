@@ -20,9 +20,8 @@ class GateController extends Controller
     public function openGate(Request $request, NovofonApiService $novofonApiService): JsonResponse
     {
         $gate = $request->input('gate');
+        $result = $novofonApiService->checkGateAccess($gate);
 
-		$result = $novofonApiService->checkGateAccess($gate);
-		
-		return response()->json(['message' => $result['success'] ? 'Ворота открываются' : 'Ошибка'], $result['success'] ? 200 : 403);
+        return response()->json(['message' => $result['success'] ? 'Ворота открываются' : 'Ошибка'], $result['success'] ? 200 : 403);
     }
 }
