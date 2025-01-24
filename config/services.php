@@ -40,6 +40,6 @@ return [
 		'caller_number' => env('NOVOFON_CALLER_NUMBER'),
 	],
 	'gate' => [
-		'phone_number' => env('GATE_PHONE_NUMBER'),
+		'phone_numbers' => json_decode(env('GATE_PHONE_NUMBERS', '{}'), true),
 	],
 ];
