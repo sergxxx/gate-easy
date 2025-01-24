@@ -1,15 +1,10 @@
 <template>
   <div class="mt-2">
     <h6>{{ title }}</h6>
-    <button
-      class="btn bg-warning fw-bold"
-	  style="padding: 10px 50px;"
-      :disabled="isLoading"
-      @click="handleClick"
-    >
+    <button class="btn bg-warning fw-bold" style="padding: 10px 50px;" :disabled="isLoading" @click="handleClick">
       Открыть
     </button>
-    <hr />
+    <hr/>
   </div>
 </template>
 

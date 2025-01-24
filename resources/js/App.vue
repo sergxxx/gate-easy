@@ -1,15 +1,9 @@
 <template>
-  <Toast :show="showToast" :message="toastMessage" />
-  
+  <Toast :show="showToast" :message="toastMessage"/>
   <div class="container text-center mt-5">
     <h5 style="background: rgb(126, 211, 33); padding: 10px; text-align: center; color: white; max-width: 350px; margin: 0 auto;">Ворота Просто</h5>
-	<div v-for="gate in gates" :key="gate.id">
-      <GateButton
-        :title="gate.title"
-        :gate-id="gate.id"
-        :is-loading="loading === gate.id"
-        @open-gate="openGate"
-      />
+    <div v-for="gate in gates" :key="gate.id">
+      <GateButton :title="gate.title" :gate-id="gate.id" :is-loading="loading === gate.id" @open-gate="openGate"/>
     </div>
   </div>
 </template>
@@ -22,20 +16,28 @@ import GateButton from './components/GateButton.vue';
 export default {
   components: {
     Toast,
-	GateButton,
+    GateButton,
   },
   data() {
     return {
       loading: null,
       showToast: false,
       toastMessage: '',
-	  loadingDuration: 5000,
-	  //gates: [],
-	  gates: [
-        { id: 1, title: '#1 Общий заезд с Измайлова 58Ак3' },
-        { id: 2, title: '#2 Гостевая парковка 58Ак3' },
-        { id: 3, title: '#3 Гостевая парковка 58А' },
-        { id: 4, title: '#4 Общий заезд с Антонова 58А' },
+      loadingDuration: 5000,
+      gates: [
+        {
+          id: 1,
+          title: '#1 Общий заезд с Измайлова 58Ак3'
+        }, {
+          id: 2,
+          title: '#2 Гостевая парковка 58Ак3'
+        }, {
+          id: 3,
+          title: '#3 Гостевая парковка 58А'
+        }, {
+          id: 4,
+          title: '#4 Общий заезд с Антонова 58А'
+        },
       ],
     };
   },
@@ -49,8 +51,8 @@ export default {
       }
     },
     async openGate(gateId) {
-	  if (this.loading !== null) return; // Не позволяем нажимать, пока идет загрузка
-	  
+      if (this.loading !== null) return; // Не позволяем нажимать, пока идет загрузка
+
       this.loading = gateId;
       this.toastMessage = 'Ожидание...';
       this.showToast = true;
@@ -64,7 +66,7 @@ export default {
       const timer = setTimeout(hideToast, this.loadingDuration);
 
       try {
-        const response = await axios.post(`/api/v1/open-gate`, { gate: gateId });
+        const response = await axios.post(`/api/v1/open-gate`, {gate : gateId});
         this.toastMessage = response.data.message || 'Ворота открываются';
         clearTimeout(timer);
         setTimeout(hideToast, this.loadingDuration);
