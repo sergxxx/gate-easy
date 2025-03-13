@@ -1,22 +1,32 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Gate;
 
 use App\Clients\NovofonClient;
+use App\Repositories\Gate\GateRepository;
 use Exception;
 
 class GateService implements GateServiceInterface
 {
-    private array $gatePhoneNumbers;
-
     /**
-     * @param NovofonClient $novofonClient
+     * @param NovofonClient  $novofonClient
+     * @param GateRepository $gateRepository
      */
     public function __construct(
         private readonly NovofonClient $novofonClient,
+        private readonly GateRepository $gateRepository
     )
     {
-        $this->gatePhoneNumbers = config('services.gate.phone_numbers');
+    }
+
+    /**
+     * Список ворот
+     *
+     * @return array[]
+     */
+    public function getGateList(): array
+    {
+        return $this->gateRepository->all();
     }
 
     /**
@@ -28,7 +38,7 @@ class GateService implements GateServiceInterface
     public function openGate(int $gateId): array
     {
         try {
-            $phoneNumber = $this->gatePhoneNumbers[$gateId] ?? null;
+            $phoneNumber = $this->gateRepository->getPhoneNumberByGateId($gateId);
 
             if (!$phoneNumber) {
                 return [
@@ -50,5 +60,7 @@ class GateService implements GateServiceInterface
                 'message' => 'Ошибка открытия ворот',
             ];
         }
+
+        return [];
     }
 }

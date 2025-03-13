@@ -24,28 +24,14 @@ export default {
       showToast: false,
       toastMessage: '',
       loadingDuration: 5000,
-      gates: [
-        {
-          id: 1,
-          title: '#1 Общий заезд с Измайлова 58Ак3'
-        }, {
-          id: 2,
-          title: '#2 Гостевая парковка 58Ак3'
-        }, {
-          id: 3,
-          title: '#3 Гостевая парковка 58А'
-        }, {
-          id: 4,
-          title: '#4 Общий заезд с Антонова 58А'
-        },
-      ],
+      gates: null,
     };
   },
   methods: {
     async fetchData() {
       try {
-        const response = await axios.get('/api/houses');
-        //this.gates = response.data;
+        const response = await axios.get('/api/v1/gates');
+        this.gates = response.data;
       } catch (error) {
         console.error('Error fetching gates', error);
       }
@@ -66,7 +52,7 @@ export default {
       const timer = setTimeout(hideToast, this.loadingDuration);
 
       try {
-        const response = await axios.post(`/api/v1/open-gate`, {gate : gateId});
+        const response = await axios.post(`/api/v1/gate/open`, {gate : gateId});
         this.toastMessage = response.data.message || 'Ворота открываются';
         clearTimeout(timer);
         setTimeout(hideToast, this.loadingDuration);
@@ -83,7 +69,7 @@ export default {
     },
   },
   mounted() {
-    //this.fetchData(); // Загружаем данные при монтировании компонента
+    this.fetchData(); // Загружаем данные при монтировании компонента
   },
 };
 </script>
