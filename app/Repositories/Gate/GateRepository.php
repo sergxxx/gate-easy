@@ -4,6 +4,9 @@ namespace App\Repositories\Gate;
 
 use App\Services\config;
 
+/**
+ * Работа с репозиторием
+ */
 class GateRepository implements GateRepositoryInterface
 {
     private $gates;
@@ -17,7 +20,7 @@ class GateRepository implements GateRepositoryInterface
      * Список ворот
      * @return array
      */
-    public function all(): array
+    public function all() : array
     {
         return $this->gates;
     }
@@ -28,7 +31,7 @@ class GateRepository implements GateRepositoryInterface
      *
      * @return string|null
      */
-    public function getPhoneNumberByGateId(int $gateId): ?string
+    public function getPhoneNumberByGateId(int $gateId) : ?string
     {
         $gateIds = array_column($this->gates, 'id');
         $index = array_search($gateId, $gateIds);

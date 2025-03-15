@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Gate\GateServiceInterface;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
+/**
+ * Контроллер упраления ворот
+ */
 class GateController extends Controller
 {
     /**
@@ -23,7 +26,7 @@ class GateController extends Controller
      *
      * @return JsonResponse
      */
-    public function getGates(Request $request): JsonResponse
+    public function getGates(Request $request) : JsonResponse
     {
         return response()->json($this->gateService->getGateList());
     }
@@ -34,16 +37,11 @@ class GateController extends Controller
      *
      * @return JsonResponse
      */
-    public function open(Request $request): JsonResponse
+    public function open(Request $request) : JsonResponse
     {
         $gateId = $request->input('gate');
 
         $result = $this->gateService->openGate($gateId);
-
-        /*$result = [
-            'success' => 1,
-            'message' => 'Ворота открываются',
-        ];*/
 
         return response()->json(
             ['message' => $result['message']],

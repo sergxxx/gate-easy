@@ -4,6 +4,9 @@ namespace App\Clients;
 
 use Novofon_API\Api;
 
+/**
+ * Клиент API Novofon https://github.com/novofon/user-api-v1
+ */
 class NovofonClient
 {
     private Api $api;
@@ -22,7 +25,7 @@ class NovofonClient
      *
      * @return array
      */
-    public function requestCheckNumber(string $phoneNumber): array
+    public function requestCheckNumber(string $phoneNumber) : array
     {
         return $this->api->requestChecknumber($this->callerNumber, $phoneNumber, 1)->toArray();
     }

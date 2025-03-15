@@ -2,10 +2,13 @@
 
 namespace App\Services\Gate;
 
+use Exception;
 use App\Clients\NovofonClient;
 use App\Repositories\Gate\GateRepository;
-use Exception;
 
+/**
+ * Сервис для управления воротами
+ */
 class GateService implements GateServiceInterface
 {
     /**
@@ -15,8 +18,7 @@ class GateService implements GateServiceInterface
     public function __construct(
         private readonly NovofonClient $novofonClient,
         private readonly GateRepository $gateRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -24,18 +26,18 @@ class GateService implements GateServiceInterface
      *
      * @return array[]
      */
-    public function getGateList(): array
+    public function getGateList() : array
     {
         return $this->gateRepository->all();
     }
 
     /**
-     * Открытие ворот.
+     * Открытие ворот
      *
      * @param int $gateId
      * @return array
      */
-    public function openGate(int $gateId): array
+    public function openGate(int $gateId) : array
     {
         try {
             $phoneNumber = $this->gateRepository->getPhoneNumberByGateId($gateId);
@@ -60,7 +62,5 @@ class GateService implements GateServiceInterface
                 'message' => 'Ошибка открытия ворот',
             ];
         }
-
-        return [];
     }
 }
