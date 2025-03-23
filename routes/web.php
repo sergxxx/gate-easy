@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('gates');
-})->name('gates');
+})->name('gates');*/
+
+Route::get('/{any}', function () {
+    return view('gates');
+})->where('any', '.*');
