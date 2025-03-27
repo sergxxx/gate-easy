@@ -1,4 +1,5 @@
 <template>
+  <Toast :show="showToast" :message="toastMessage"/>
   <div class="container text-center mt-5">
     <h3>Регистрация</h3>
     <input v-model="name" placeholder="Имя" class="form-control mb-2" />
@@ -14,14 +15,18 @@
 
 <script>
 import axios from 'axios';
+import Toast from "./../components/Toast.vue";
 
 export default {
+  components : {Toast},
   data() {
     return {
       name: '',
       email: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      showToast: false,
+      toastMessage: ''
     };
   },
   methods: {
@@ -34,10 +39,13 @@ export default {
           password_confirmation: this.password_confirmation
         });
 
-        alert('Регистрация успешна, войдите в систему');
+        this.showToast = true;
+        this.toastMessage = 'Регистрация успешна, войдите в систему';
+
         this.$router.push('/login');
       } catch (error) {
-        alert(error.response.data.message || 'Ошибка регистрации');
+        this.showToast = true;
+        this.toastMessage = error.response.data.message || 'Ошибка регистрации';
       }
     }
   }

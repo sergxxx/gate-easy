@@ -1,14 +1,16 @@
 <template>
   <Toast :show="showToast" :message="toastMessage"/>
-  <div v-for="gate in gates" :key="gate.id">
-    <GateButton :title="gate.title" :gate-id="gate.id" :is-loading="loading === gate.id" @open-gate="openGate"/>
+  <div class="container text-center mt-3">
+    <div v-for="gate in gates" :key="gate.id">
+      <GateButton :title="gate.title" :gate-id="gate.id" :is-loading="loading === gate.id" @open-gate="openGate"/>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Toast from './components/Toast.vue';
-import GateButton from './components/GateButton.vue';
+import Toast from './../components/Toast.vue';
+import GateButton from './../components/GateButton.vue';
 
 export default {
   components: {
@@ -51,10 +53,12 @@ export default {
       try {
         const response = await axios.post(`/api/v1/gate/open`, {gate : gateId});
         this.toastMessage = response.data.message || 'Ворота открываются';
+
         clearTimeout(timer);
         setTimeout(hideToast, this.loadingDuration);
       } catch (error) {
         this.toastMessage = error.response.data.message || 'Ошибка';
+
         clearTimeout(timer);
         setTimeout(hideToast, this.loadingDuration);
       } finally {

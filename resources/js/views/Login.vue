@@ -1,4 +1,5 @@
 <template>
+  <Toast :show="showToast" :message="toastMessage"/>
   <div class="container text-center mt-5">
     <h3>Вход</h3>
     <input v-model="email" placeholder="Email" class="form-control mb-2" />
@@ -12,12 +13,16 @@
 
 <script>
 import axios from 'axios';
+import Toast from "./../components/Toast.vue";
 
 export default {
+  components : {Toast},
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      showToast: false,
+      toastMessage: ''
     };
   },
   methods: {
@@ -33,7 +38,8 @@ export default {
 
         this.$router.push('/');
       } catch (error) {
-        alert(error.response.data.message || 'Ошибка входа');
+        this.showToast = true;
+        this.toastMessage = error.response.data.message || 'Ошибка входа';
       }
     }
   }

@@ -4,10 +4,10 @@
   </div>
   <div class="container text-center mt-5">
     <router-link style="text-decoration: none;" to="/">
-      <h5 style="background: rgb(126, 211, 33); padding: 10px; text-align: center; color: white; max-width: 350px; margin: 0 auto;">Ворота Просто</h5>
+      <h5 style="background: rgb(126, 211, 33); padding: 10px; text-align: center; color: white;">Ворота Просто</h5>
     </router-link>
-    <router-view />
   </div>
+  <router-view />
 </template>
 
 <script>

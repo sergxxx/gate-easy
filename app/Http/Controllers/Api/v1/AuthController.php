@@ -9,8 +9,17 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 
+/**
+ * Контроллер упраления ворот
+ */
 class AuthController extends Controller
 {
+    /**
+     * Регистрация
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function register(Request $request): JsonResponse
     {
         $request->validate([
@@ -28,6 +37,12 @@ class AuthController extends Controller
         return response()->json(['message' => 'Регистрация успешна'], 201);
     }
 
+    /**
+     * Авторизация
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function login(Request $request): JsonResponse
     {
         $request->validate([
@@ -51,12 +66,24 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Выход
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete();
         return response()->json(['message' => 'Вы вышли из системы']);
     }
 
+    /**
+     * Пользователь
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function user(Request $request): JsonResponse
     {
         return response()->json($request->user());
