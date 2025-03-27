@@ -32,9 +32,10 @@ class AuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => bcrypt($request->password),
+            'is_active' => false,
         ]);
 
-        return response()->json(['message' => 'Регистрация успешна'], 201);
+        return response()->json(['message' => 'Регистрация успешна. Ожидайте активации.'], 201);
     }
 
     /**
@@ -56,6 +57,10 @@ class AuthController extends Controller
             throw ValidationException::withMessages([
                 'email' => ['Неверный email или пароль'],
             ]);
+        }
+
+        if (!$user->is_active) {
+            return response()->json(['message' => 'Ваш аккаунт не активирован'], 403);
         }
 
         $token = $user->createToken('api_token')->plainTextToken;
