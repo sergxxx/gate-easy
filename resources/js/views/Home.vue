@@ -32,7 +32,11 @@ export default {
         const response = await axios.get('/api/v1/gates');
         this.gates = response.data;
       } catch (error) {
-        console.error('Error fetching gates', error);
+        if (error.response && error.response.status === 401) {
+          this.$router.push('/login');
+        } else {
+          console.warm('Ошибка: ', error);
+        }
       }
     },
     async openGate(gateId) {
