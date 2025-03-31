@@ -4,6 +4,7 @@ namespace App\Services\Gate;
 
 use Exception;
 use App\Clients\NovofonClient;
+use App\Jobs\OpenGateJob;
 use App\Repositories\Gate\GateRepository;
 
 /**
@@ -49,12 +50,13 @@ class GateService implements GateServiceInterface
                 ];
             }
 
-            $response = $this->novofonClient->requestCheckNumber($phoneNumber);
+            //отправка в очередь
+            dispatch(new OpenGateJob($phoneNumber));
 
             return [
                 'success' => true,
                 'message' => 'Ворота открываются',
-                'data' => $response,
+                'data' => [],
             ];
         } catch (Exception $e) {
             return [
