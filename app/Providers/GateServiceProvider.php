@@ -6,7 +6,8 @@ use App\Services\Gate\GateService;
 use App\Services\Gate\GateServiceInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Gate\GateRepository;
-use App\Repositories\Gate\GateRepositoryInterface;
+use App\Services\Gate\SendStrategies\ImmediateGateSendStrategy;
+use App\Services\Gate\SendStrategies\QueuedGateSendStrategy;
 
 class GateServiceProvider extends ServiceProvider
 {
@@ -15,8 +16,16 @@ class GateServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(GateServiceInterface::class, GateService::class);
-        $this->app->bind(GateRepositoryInterface::class, GateRepository::class);
+        $this->app->bind(GateServiceInterface::class, function ($app) {
+            $sendStrategy = config('gate.send_queue')
+                ? $app->make(QueuedGateSendStrategy::class)
+                : $app->make(ImmediateGateSendStrategy::class);
+
+            return new GateService(
+                $app->make(GateRepository::class),
+                $sendStrategy
+            );
+        });
     }
 
     /**

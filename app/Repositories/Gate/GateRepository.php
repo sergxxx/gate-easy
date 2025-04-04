@@ -5,7 +5,7 @@ namespace App\Repositories\Gate;
 use App\Services\config;
 
 /**
- * Работа с репозиторием
+ * Работа с данными по воротам
  */
 class GateRepository implements GateRepositoryInterface
 {

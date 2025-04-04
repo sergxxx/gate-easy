@@ -3,22 +3,22 @@
 namespace App\Services\Gate;
 
 use Exception;
-use App\Clients\NovofonClient;
-use App\Jobs\OpenGateJob;
 use App\Repositories\Gate\GateRepository;
+use App\Services\Gate\SendStrategies\GateSendStrategyInterface;
 
 /**
  * Сервис для управления воротами
+ * Стратегия открытия ворот (через очередь или сразу через API) задаётся через конфиг env GATE_SEND_QUEUE
  */
-class GateService implements GateServiceInterface
+readonly class GateService implements GateServiceInterface
 {
     /**
-     * @param NovofonClient  $novofonClient
-     * @param GateRepository $gateRepository
+     * @param GateRepository            $gateRepository
+     * @param GateSendStrategyInterface $sendStrategy
      */
     public function __construct(
-        private readonly NovofonClient $novofonClient,
-        private readonly GateRepository $gateRepository
+        private GateRepository $gateRepository,
+        private GateSendStrategyInterface $sendStrategy
     ) {
     }
 
@@ -35,6 +35,7 @@ class GateService implements GateServiceInterface
     /**
      * Открытие ворот
      *
+     *
      * @param int $gateId
      * @return array
      */
@@ -50,14 +51,7 @@ class GateService implements GateServiceInterface
                 ];
             }
 
-            //отправка в очередь
-            dispatch(new OpenGateJob($phoneNumber));
-
-            return [
-                'success' => true,
-                'message' => 'Ворота открываются',
-                'data' => [],
-            ];
+            return $this->sendStrategy->send($phoneNumber);
         } catch (Exception $e) {
             return [
                 'success' => false,
